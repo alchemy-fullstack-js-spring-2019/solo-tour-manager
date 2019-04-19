@@ -42,8 +42,9 @@ weather | object with weather conditions (see demo, choose some fields)
 attendence | number with min of 1
 
 ## Wunderground Middleware
+https://www.metaweather.com/api/
 
-When adding a stop, the API takes a `zip`, but needs to look up additional information.
+When adding a stop, the API takes a `lat/lon`, but needs to look up additional information.
 for info on getting a key, plus a request function you can use (or use as a guide to create your own).
 
 You need to TDD this as middleware, but keep in mind you do **not** use the actual api function to unit test the middleware.
