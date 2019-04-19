@@ -37,14 +37,13 @@ The schema structure of a stop looks like:
 
 path | type info
 ---|---
-location | object with city, state, and zip
+location | object with latitude and longitude
 weather | object with weather conditions (see demo, choose some fields)
 attendence | number with min of 1
 
-## Wunderground Middleware
+## MetaWeather Middleware
 
-When adding a stop, the API takes a `zip`, but needs to look up additional information.
-for info on getting a key, plus a request function you can use (or use as a guide to create your own).
+When adding a stop, the API takes a `latitude` and `longitude`, but needs to look up additional information.
 
 You need to TDD this as middleware, but keep in mind you do **not** use the actual api function to unit test the middleware.
 Check that it augments the `request.body` with the required inforation.
