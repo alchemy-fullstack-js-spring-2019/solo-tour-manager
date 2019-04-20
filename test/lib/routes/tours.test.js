@@ -25,7 +25,7 @@ describe('tours route', () => {
                 });
             });          
     });
-    it('can get all tours', ()=>{
+    it('can get all tours', () => {
         return Tour.create(
             {
                 title:'first tour',
@@ -39,6 +39,28 @@ describe('tours route', () => {
                     .then(received=>{
                         expect(received.body.length).toEqual(1);
                     });
+            });
+    });
+    it('can get a tour by id', () => {
+        return Tour.create(
+            {
+                title:'first tour',
+                activities: ['poledancing', 'trapese'],
+                date:date
+            }
+        )
+            .then(created=>{
+                const id = created.id;
+                return request(app)
+                    .get(`/api/v1/tours/${id}`)
+                    .then(foundTours =>{
+                        expect(foundTours.body).toEqual({
+                            title:'first tour',
+                            activities: ['poledancing', 'trapese'],
+                            date:date.toISOString()
+                        });
+                    });
+              
             });
     });
 
