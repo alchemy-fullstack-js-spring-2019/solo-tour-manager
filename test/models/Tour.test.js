@@ -42,4 +42,27 @@ describe('Tour schema tests', () => {
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });
+
+  it('has a required title field', () => {
+    const tour = new Tour({
+      activities: ['fire-breathing', 'feats of strength', 'juggling'],
+      launchdate: new Date(),
+      stops: [
+        {
+          location: 'Portland',
+          weather: 'Sunny',
+          attendance: 1
+        },
+        {
+          location: 'Seattle',
+          weather: 'Rainy',
+          attendance: 5
+        }
+      ]
+    });
+
+    const error = tour.validateSync().errors;
+
+    expect(error.title.message).toEqual('Path `title` is required.');
+  });
 });
