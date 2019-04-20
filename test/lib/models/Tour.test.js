@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 
 describe('Tour mobel', ()=>{
     const date = new Date;
-    it('has title, activities, and a date', ()=>{
-   
+    it('has title, activities, and a date', ()=>{  
         const tour = new Tour({ title:'first tour',
             activities: ['poledancing', 'trapese'],
             date : date });
-
         expect(tour.toJSON()).toEqual({
             activities: ['poledancing', 'trapese'],
             title: 'first tour',

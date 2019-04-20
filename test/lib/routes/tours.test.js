@@ -15,13 +15,32 @@ describe('tours route', () => {
                 date:date
             })
             .then(created => {
-                console.log('created in est', created);
                 expect(created.body).toEqual({
                     title:'first tour',
-                    activities: ['poleancing', 'trapese'],
-                    date:date      
+                    activities: ['poledancing', 'trapese'],
+                    date:date.toISOString(),
+                    __v: 0,
+                    _id: expect.any(String)
+
                 });
             });          
     });
+    it('can get all tours', ()=>{
+        return Tour.create(
+            {
+                title:'first tour',
+                activities: ['poledancing', 'trapese'],
+                date:date
+            }
+        )
+            .then(()=>{
+                return request(app)
+                    .get('/api/v1/tours/')
+                    .then(received=>{
+                        expect(received.body.length).toEqual(1);
+                    });
+            });
+    });
+
 })
 ;
