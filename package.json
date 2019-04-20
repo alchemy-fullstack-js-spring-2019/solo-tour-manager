@@ -2,7 +2,19 @@
   "name": "solo-tour-manager",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --verbose --runInBand",
+    "test:watch": "npm run test -- --watch",
+    "start": "node server.js",
+    "start:watch": "nodemon server.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "directories": {
     "lib": "lib",
     "test": "tests"
@@ -20,19 +32,10 @@
     "nodemon": "^1.18.11",
     "supertest": "^4.0.2"
   },
-  "scripts": {
-    "test": "jest --verbose --runInBand",
-    "test:watch": "npm run test -- --watch",
-    "start": "node server.js",
-    "start:watch": "nodemon server.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meganamarshall/solo-tour-manager.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/meganamarshall/solo-tour-manager/issues"
   },
