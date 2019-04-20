@@ -16,5 +16,11 @@ describe('Tour mobel', ()=>{
             date: date
         });               
     });
+    it('title is required', ()=>{
+        const tour = new Tour({ activities: ['poledancing', 'trapese'],
+            date : date });
+        const errors = tour.validateSync().errors;
+        expect(errors.title.message).toEqual('Path `title` is required.');    
+    });
 });
 
