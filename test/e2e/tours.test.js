@@ -29,14 +29,11 @@ describe('tours routes', () => {
       .post('/tours')
       .send(testTour)
       .then(res => {
-        return Promise.all([
-          Promise.resolve(res.body),
-          request(app)
-            .post(`/tours/${res.body._id}/stops`)
-            .send(testStop)
-        ]);
+        return request(app)
+          .post(`/tours/${res.body._id}/stops`)
+          .send(testStop);
       })
-      .then(([, res]) => {
+      .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           __v: 0,
@@ -65,43 +62,7 @@ describe('tours routes', () => {
           ]
         });
       });
-    // return createdTour;
   });
-  // .then(createdTour => {
-  //   return request(app)
-  //     .get(`/tours/${createdTour._id}`);
-  // })
-  // .then(res => {
-  //   expect(res.body).toEqual({
-  //     _id: expect.any(String),
-  //     __v: 0,
-  //     title: 'Never Ending Tour',
-  //     activities: ['listening', 'swaying', 'Bob Dylan'],
-  //     launchDate: testLaunchDate,
-  //     stops: [
-  //       {
-  //         _id: expect.any(String),
-  //         __v: 0,
-  //         location: {
-  //           lat: 37.77,
-  //           lon: -122.41,
-  //           woeid: 2487956,
-  //           name: 'San Francisco'
-  //         },
-  //         weather: {
-  //           sunRise: '2019-04-21T13:26:32.195Z',
-  //           sunSet: '2019-04-22T02:49:55.671Z',
-  //           weatherState: 'Light Cloud',
-  //           temp: 14.195,
-  //           humidity: 72
-  //         },
-  //         attendance: 1
-  //       }
-  //     ]
-  //   });
-  // });
-  // });
-
 });
 
 // "sunRise": "2019-04-21T13:26:32.195Z",
