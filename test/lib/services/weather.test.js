@@ -1,4 +1,5 @@
 const getWeather = require('../../../lib/services/weather');
+jest.mock('../../../lib/services/weather.js');
 
 describe('weather api', ()=>{
     it('gets random weather', ()=>{
