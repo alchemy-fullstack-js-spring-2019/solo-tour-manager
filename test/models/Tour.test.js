@@ -21,5 +21,14 @@ describe('Tour model', () => {
       launchDate: testLaunchDate,
       stops: [stop1, stop2],
     });
+
+  });
+  it('has a required name', () => {
+    const tour = new Tour({
+      activities: ['crying']
+    });
+        
+    const error = tour.validateSync().errors;
+    expect(error.title.message).toBe('Path `title` is required.');
   });
 });
