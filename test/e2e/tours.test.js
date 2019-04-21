@@ -36,38 +36,13 @@ describe('tours routes', () => {
             .send(testStop)
         ]);
       })
-      .then(([createdTour, res]) => {
-        expect(res.body).toEqual({
-          _id: expect.any(String),
-          __v: 0,
-          location: {
-            lat: 37.77,
-            lon: -122.41,
-            woeid: 2487956,
-            name: 'San Francisco'
-          },
-          weather: {
-            sunRise: '2019-04-21T13:26:32.195Z',
-            sunSet: '2019-04-22T02:49:55.671Z',
-            weatherState: 'Light Cloud',
-            temp: 14.195,
-            humidity: 72
-          },
-          attendance: 1
-        });
-        return createdTour;
-      })
-      .then(createdTour => {
-        return request(app)
-          .get(`/tours/${createdTour._id}`);
-      })
-      .then(res => {
+      .then(([, res]) => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           __v: 0,
           title: 'Never Ending Tour',
           activities: ['listening', 'swaying', 'Bob Dylan'],
-          launchDate: testLaunchDate,
+          launchDate: testLaunchDate.toISOString(),
           stops: [
             {
               _id: expect.any(String),
@@ -90,7 +65,42 @@ describe('tours routes', () => {
           ]
         });
       });
+    // return createdTour;
   });
+  // .then(createdTour => {
+  //   return request(app)
+  //     .get(`/tours/${createdTour._id}`);
+  // })
+  // .then(res => {
+  //   expect(res.body).toEqual({
+  //     _id: expect.any(String),
+  //     __v: 0,
+  //     title: 'Never Ending Tour',
+  //     activities: ['listening', 'swaying', 'Bob Dylan'],
+  //     launchDate: testLaunchDate,
+  //     stops: [
+  //       {
+  //         _id: expect.any(String),
+  //         __v: 0,
+  //         location: {
+  //           lat: 37.77,
+  //           lon: -122.41,
+  //           woeid: 2487956,
+  //           name: 'San Francisco'
+  //         },
+  //         weather: {
+  //           sunRise: '2019-04-21T13:26:32.195Z',
+  //           sunSet: '2019-04-22T02:49:55.671Z',
+  //           weatherState: 'Light Cloud',
+  //           temp: 14.195,
+  //           humidity: 72
+  //         },
+  //         attendance: 1
+  //       }
+  //     ]
+  //   });
+  // });
+  // });
 
 });
 
