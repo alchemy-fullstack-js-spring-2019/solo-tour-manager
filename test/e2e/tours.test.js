@@ -50,4 +50,25 @@ describe('tours routes', () => {
         });
       });
   });
+
+  it('can get a tour by id', () => {
+    return Tour.create(testTour)
+      .then(createdTour => {
+        return Promise.all([
+          Promise.resolve(createdTour),
+          request(app)
+            .get(`/tours/${createdTour._id}`)
+        ]);
+      })
+      .then(([createdTour, foundTour]) => {
+        expect(foundTour.body).toEqual({ 
+          _id: expect.any(String),
+          title: createdTour.title,
+          activities: ['listening', 'swaying', 'Bob Dylan'],
+          launchDate: testLaunchDate.toISOString(),
+          stops: [stop1.toString(), stop2.toString()],
+          __v: 0
+        });
+      });
+  });
 });
