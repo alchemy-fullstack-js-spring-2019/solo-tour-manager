@@ -14,17 +14,17 @@ describe('Tour routes', () => {
     });
   });
 
+  
+  // beforeEach(() => {
+  //   return mongoose.connection.dropDatabase();
+  // });
+  // afterAll(() => {
+  //   return mongoose.connection.close();
+  // });
+  
   // beforeAll(() => {
   //   return connect();
   // });
-
-  beforeEach(() => {
-    return mongoose.connection.dropDatabase();
-  });
-  afterAll(() => {
-    return mongoose.connection.close();
-  });
-
   it('creates a tour', () => {
     return request(app)
       .post('/tours')
@@ -70,4 +70,14 @@ describe('Tour routes', () => {
           });
       });
   });
+
+  it('finds and returns all tours', () => {
+    return request(app)
+      .get('/tours')
+      .then(res => {
+        expect(res.body).toHaveLength(1);
+        expect(res.body).toEqual(expect.any(Array));
+      });
+  });
+
 });
