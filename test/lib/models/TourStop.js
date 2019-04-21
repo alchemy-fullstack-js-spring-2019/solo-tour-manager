@@ -1,10 +1,10 @@
-const Stop = require('../../../lib/Model/Stop');
+const Stop = require('../../../lib/Model/TourStop');
 const mongoose = require('mongoose');
 
 describe('Stop Model', ()=>{
     it('it has location, weather, attendance', ()=>{
         const stop = new Stop({
-            tour
+           
             location: { latitude:123, longitude:666 },
             weather: { weather_state_abbr:'sn' },
             attendance: 1255346

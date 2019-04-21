@@ -20,7 +20,8 @@ describe('tours route', () => {
                     activities: ['poledancing', 'trapese'],
                     date:date.toISOString(),
                     __v: 0,
-                    _id: expect.any(String)
+                    _id: expect.any(String),
+                    stops: []
 
                 });
             });          
@@ -47,8 +48,7 @@ describe('tours route', () => {
                 title:'first tour',
                 activities: ['poledancing', 'trapese'],
                 date:date
-            }
-        )
+            })
             .then(created=>{
                 const id = created.id;
                 return request(app)
@@ -57,12 +57,30 @@ describe('tours route', () => {
                         expect(foundTours.body).toEqual({
                             title:'first tour',
                             activities: ['poledancing', 'trapese'],
-                            date:date.toISOString()
+                            date:date.toISOString(),
+                            stops:[]
                         });
                     });
               
             });
     });
+    it('cant post a stop to a tour', () => {
+        return Tour.create({
+            title:'first tour', 
+            activities: ['poledancing', 'trapese'],
+            date:date
+        })
+            .then(createdTour => {
+                const createdTourId = createdTour.id;
+                return request(app)
+                    .post(`/tours/:${createdTourId}/stops`)
+                    .send({
+                        
+                    })
 
+            });
+
+    });
+  
 })
 ;

@@ -1,4 +1,4 @@
-const Tour = require('../../../lib/Model/Tour.js');
+const Tour = require('../../../lib/Model/Tour');
 const mongoose = require('mongoose');
 
 describe('Tour mobel', ()=>{
@@ -11,7 +11,8 @@ describe('Tour mobel', ()=>{
             activities: ['poledancing', 'trapese'],
             title: 'first tour',
             _id: expect.any(mongoose.Types.ObjectId),
-            date: date
+            date: date,
+            stops:[]
         });               
     });
     it('title is required', ()=>{
