@@ -11,7 +11,7 @@ describe('tours routes', () => {
     const stop2 = new mongoose.Types.ObjectId;
 
     const testTour = {
-      title: 'Neverending Tour',
+      title: 'Never Ending Tour',
       activities: ['listening', 'swaying', 'Bob Dylan'],
       launchDate: testLaunchDate,
       stops: [stop1, stop2]
@@ -22,9 +22,9 @@ describe('tours routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          title: 'Neverending Tour',
+          title: 'Never Ending Tour',
           activities: ['listening', 'swaying', 'Bob Dylan'],
-          launchDate: testLaunchDate,
+          launchDate: testLaunchDate.toISOString(),
           stops: [stop1.toString(), stop2.toString()],
           __v: 0
         });
