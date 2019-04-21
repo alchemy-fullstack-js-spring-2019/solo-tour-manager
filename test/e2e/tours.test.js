@@ -101,6 +101,54 @@ describe('tours routes', () => {
         });
       });
   });
+
+  it('can get all tours', () => {
+    return request(app)
+      .post('/tours')
+      .send(testTour)
+      .then(res => {
+        return request(app)
+          .post(`/tours/${res.body._id}/stops`)
+          .send(testStop)
+          .then(() => {
+            return res.body._id;
+          });
+      })
+      .then(() => {
+        return request(app)
+          .get('/tours');
+      })
+      .then(res => {
+        expect(res.body).toHaveLength(1);
+        expect(res.body[0]).toEqual({
+          _id: expect.any(String),
+          __v: 1,
+          title: 'Never Ending Tour',
+          activities: ['listening', 'swaying', 'Bob Dylan'],
+          launchDate: testLaunchDate.toISOString(),
+          stops: [
+            {
+              _id: expect.any(String),
+              __v: 0,
+              location: {
+                lat: 37.77,
+                lon: -122.41,
+                woeid: 2487956,
+                name: 'San Francisco'
+              },
+              weather: {
+                sunRise: '2019-04-21T13:26:32.195Z',
+                sunSet: '2019-04-22T02:49:55.671Z',
+                weatherState: 'Light Cloud',
+                temp: 14.195,
+                humidity: 72
+              },
+              attendance: 1
+            }
+          ]
+        });
+      });
+  });
 });
 
 // "sunRise": "2019-04-21T13:26:32.195Z",
