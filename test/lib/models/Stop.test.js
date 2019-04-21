@@ -13,8 +13,6 @@ describe('Stop Model', ()=>{
             weather: { weather_state_abbr:'sn' },
             attendance: 1255346,
             _id:expect.any(mongoose.Types.ObjectId)
-        });
-
-        
+        });   
     });
 });
