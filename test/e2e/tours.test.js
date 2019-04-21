@@ -55,6 +55,22 @@ describe('tours routes', () => {
       });
   });
 
+  it('can create a tour', () => {
+    return request(app)
+      .post('/tours')
+      .send(testTour)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          __v: 0,
+          title: 'Never Ending Tour',
+          activities: ['listening', 'swaying', 'Bob Dylan'],
+          launchDate: testLaunchDate.toISOString(),
+          stops: []
+        });
+      });
+  });
+
   it('can get a tour by id', () => {
     return request(app)
       .post('/tours')
