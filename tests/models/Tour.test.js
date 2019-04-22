@@ -20,7 +20,7 @@ describe('Tour Model', () => {
     expect(tour.toJSON()).toEqual({
       title: 'greatest show on earth',
       activities: ['games', 'fun stuff'],
-      launchDate: date.toISOString(),
+      launchDate: date,
       stops: [{ _id: expect.any(mongoose.Types.ObjectId), location: '36.974018,-122.030952', weather: { weatherState: 'rainy', temp: 26 }, attendance: 145 }],
       _id: expect.any(mongoose.Types.ObjectId)
     });
