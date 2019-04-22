@@ -20,7 +20,7 @@ The schema structure of a tours looks like:
 path | type info
 ---|---
 title | required title of the tour
-activities | array of string activities that will happen during the show
+activities | array of string activites that will happen during the show
 launchDate | date tour will start. default to now
 stops | array of stop objects, see stop schema below
 
@@ -30,24 +30,23 @@ In addition there are the following APIs for managing tour stops:
 
 * `POST` `/tours/:id/stops` - add a stop to this tour
 * `DELETE` `/tours/:id/stops/:stopId` - remove a stop that got cancelled
-* `PATCH` `/tours/:id/stops/:stopId/attendance` - update a stop (after complete) with number of attendees (NOTE:
-this should _only_ update the attendance field of the stop, not other updates allowed)
+* `POST` `/tours/:id/stops/:stopId/attendence` - update a stop (after complete) with number of attendees (NOTE:
+this should _only_ update the attendence field of the stop, not other updates allowed)
 
 The schema structure of a stop looks like:
 
 path | type info
 ---|---
-location | object with lat and lon
+location | object with latitude and longitude
 weather | object with weather conditions (see demo, choose some fields)
-attendance | number with min of 1
+attendence | number with min of 1
 
-## Wunderground Middleware
+## MetaWeather Middleware
 
-When adding a stop, the API takes a `lat and lon`, but needs to look up additional information.
-for info on getting a key, plus a request function you can use (or use as a guide to create your own).
+When adding a stop, the API takes a `latitude` and `longitude`, but needs to look up additional information.
 
 You need to TDD this as middleware, but keep in mind you do **not** use the actual api function to unit test the middleware.
-Check that it augments the `request.body` with the required information.
+Check that it augments the `request.body` with the required inforation.
 
 
 ## Rubric **15pts**
