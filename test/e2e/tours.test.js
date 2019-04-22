@@ -1,9 +1,6 @@
 require('../connect-db');
 const request = require('supertest');
-// const mongoose = require('mongoose');
 const app = require('../../lib/app');
-// const Tour = require('../../lib/models/Tour');
-// const Stop = require('../../lib/models/Stop');
 
 jest.mock('../../lib/services/metaweather-api.js');
 
