@@ -14,4 +14,18 @@ describe('error middleware function', () => {
       error
     });
   });
+  it('sets the status to the error status and sends the error', () => {
+    const error = new Error('oops');
+    error.status = 404;
+    const res = {};
+    res.status = jest.fn(() => res);
+    res.send = jest.fn(() => res);
+
+    errorMiddleware(error, {}, res, () => { });
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith({
+      error: error.message
+    });
+  });
 });

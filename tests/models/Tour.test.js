@@ -16,7 +16,7 @@ describe('Tour Model', () => {
         attendance: 145 
       }]
     });
-    console.log(tour);
+
     expect(tour.toJSON()).toEqual({
       title: 'greatest show on earth',
       activities: ['games', 'fun stuff'],
