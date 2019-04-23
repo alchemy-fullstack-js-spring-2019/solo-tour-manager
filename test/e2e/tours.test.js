@@ -1,4 +1,4 @@
-// const Tour = require('../../lib/models/Tour');
+require('../connect-to-db');
 const request = require('supertest');
 const app = require('../../lib/app');
 
@@ -10,7 +10,6 @@ describe('tour routes tests', () => {
         title: 'Magic Mystery Tour',
         activities: ['dancing', 'singing', 'juggling'],
         launchDate: Date.now(),
-        stops: []
       })
       .then(results => {
         expect(results.body).toEqual({
@@ -20,7 +19,5 @@ describe('tour routes tests', () => {
           stops: [] 
         });
       });
-
   });
-
 });

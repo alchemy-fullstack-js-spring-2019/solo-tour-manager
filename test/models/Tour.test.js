@@ -11,7 +11,6 @@ describe('Tour model tests', () => {
         'fire-eating'
       ]
     });
-    console.log(tour.toJSON());
     expect(tour.toJSON()).toEqual({
       _id: expect.any(mongoose.Types.ObjectId),
       title: 'Amazing Circus',
