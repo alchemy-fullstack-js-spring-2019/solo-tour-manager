@@ -1,7 +1,11 @@
 const Tour = require('../../../lib/Model/Tour');
+const TourStop = require('../../../lib/Model/TourStop');
+
 const tours = require('../../../lib/routes/tours');
 const request = require('supertest');
 const app = require('../../../lib/app');
+const getWeather = require('../../../lib/services/weather');
+jest.mock('../../../lib/services/weather.js');
 require('../data-helper');
 
 describe('tours route', () => {
@@ -64,20 +68,35 @@ describe('tours route', () => {
               
             });
     });
-    it('cant post a stop to a tour', () => {
+    it.only('cant post a stop to a tour', () => {
         return Tour.create({
             title:'first tour', 
             activities: ['poledancing', 'trapese'],
             date:date
         })
-            .then(createdTour => {
-                const createdTourId = createdTour.id;
+            .then(createdTour=>{
+                return Promise.all([
+                    Promise.resolve(createdTour),
+                    getWeather()
+                ]);
+            })
+            .then(([createdTour, weather])=>{
+                console.log('weather', weather);
+                const createdTourId = createdTour._id; //works   
                 return request(app)
-                    .post(`/tours/:${createdTourId}/stops`)
+                    .post(`/api/v1/tours/${createdTourId}/stops`)
                     .send({
-                        
-                    })
-
+                        location: weather.latt_long,
+                        weather: weather.currentWeather,
+                        attendance: 600
+                    });
+            })
+            .then(()=>{
+                return TourStop
+                    .find();     
+            })
+            .then(found=>{
+                expect(found).toEqual('hi');
             });
 
     });
