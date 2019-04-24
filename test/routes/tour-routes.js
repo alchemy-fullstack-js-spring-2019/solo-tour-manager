@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const connect = require('../../lib/utils/connect');
+const connect = require('../../lib/utils/connect');
 const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
@@ -22,9 +22,9 @@ describe('Tour routes', () => {
     return mongoose.connection.close();
   });
   
-  // beforeAll(() => {
-  //   return connect();
-  // });
+  beforeAll(() => {
+    return connect();
+  });
 
   it('creates a tour', () => {
     return request(app)
