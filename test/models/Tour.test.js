@@ -1,12 +1,25 @@
 const Tour = require('../../lib/models/Tour');
 const mongoose = require('mongoose');
+// const connect = require('../../lib/utils/connect');
 
 describe('Tour schema tests', () => {
+  // beforeAll(() => {
+  //   return connect();
+  // });
+
+  // beforeEach(() => {
+  //   mongoose.connection.dropDatabase();
+  // });
+
+  // afterAll(() => {
+  //   return mongoose.connection.close();
+  // });
+
   it('can create a Tour', () => {
     const tour = new Tour({
       title: 'Best Little Whore-House in PDX',
       activities: ['fire-breathing', 'feats of strength', 'juggling'],
-      launchdate: new Date(),
+      launchdate: new Date('1999'),
       stops: [
         {
           location: 'Portland',
@@ -21,25 +34,23 @@ describe('Tour schema tests', () => {
       ]
     });
 
-    expect(tour.toJSON()).toEqual({
+    console.log('nonJSON', tour);
+
+    expect(tour).toEqual({
       title: 'Best Little Whore-House in PDX',
       activities: ['fire-breathing', 'feats of strength', 'juggling'],
-      launchdate: expect.any(Date),
+      launchdate: new Date('1999'),
       stops: [
         {
-          location: 'Portland',
-          weather: 'Sunny',
           attendance: 1,
-          _id: expect.any(mongoose.Types.ObjectId)
+          _id: expect.any(String)
         },
         {
-          location: 'Seattle',
-          weather: 'Rainy',
           attendance: 5,
-          _id: expect.any(mongoose.Types.ObjectId)
+          _id: expect.any(String)
         }
       ],
-      _id: expect.any(mongoose.Types.ObjectId)
+      _id: expect.any(String)
     });
   });
 
@@ -62,7 +73,6 @@ describe('Tour schema tests', () => {
     });
 
     const error = tour.validateSync().errors;
-
     expect(error.title.message).toEqual('Path `title` is required.');
   });
 });
