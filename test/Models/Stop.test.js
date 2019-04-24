@@ -1,5 +1,5 @@
 const Stop = require('../../lib/Models/Stop');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 describe('stop schema test', () => {
   it('has location, weather, and attendance', () => {
@@ -26,7 +26,8 @@ describe('stop schema test', () => {
         temp_min: 40,
         description: 'cloudy'
       },
-      attendance: 2
+      attendance: 2,
+      _id: expect.any(mongoose.Types.ObjectId)
     });
   });
 });
