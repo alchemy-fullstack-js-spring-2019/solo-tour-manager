@@ -14,6 +14,7 @@ describe('tour routes', () => {
       }]
       })
       .then(createdTour => {
+      
         expect(createdTour.body).toEqual({
           title: 'greatest show',
           activities: ['games'],
