@@ -42,5 +42,26 @@ describe('tour routes tests', () => {
       });
   });
 
+  it('gets a tour by id', () => {
+    return Tour.create({ 
+      title: 'Funny Little Dancing Tour',
+      activities: ['dancing', 'comedy'],
+      launchDate
+    })
+      .then(tour => {
+        return request(app)
+          .get(`/tours/${tour._id}`)
+          .then(results => {
+            expect(results.body).toEqual({
+              __v: 0,
+              _id: expect.any(String),
+              title: 'Funny Little Dancing Tour',
+              activities: ['dancing', 'comedy'],
+              launchDate: expect.any(String),
+              stops: []
+            });
+          });
+      });
+  });
   
 });
