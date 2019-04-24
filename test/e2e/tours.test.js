@@ -1,6 +1,5 @@
 require('dotenv').config();
 require('../connect-to-db');
-// const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
 const Tour = require('../../lib/models/Tour');
