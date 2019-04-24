@@ -30,4 +30,20 @@ describe('stop schema test', () => {
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });
+
+  it('has a required lat/lon and attendance', () => {
+    const stop = new Stop({
+      location: 'texas',
+      weather: {
+        temp_max: 60,
+        temp_min: 40,
+        description: 'cloudy'
+      }
+    });
+
+    const errors = stop.validateSync().errors;
+    expect(errors.attendance.message).toEqual('Path `attendance` is required.');
+    expect(errors['location.lon'].message).toEqual('Path `location.lon` is required.');
+    expect(errors['location.lat'].message).toEqual('Path `location.lat` is required.');
+  });
 });
