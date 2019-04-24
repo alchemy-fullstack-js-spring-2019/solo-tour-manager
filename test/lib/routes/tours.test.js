@@ -1,5 +1,6 @@
 const Tour = require('../../../lib/Model/Tour');
 const TourStop = require('../../../lib/Model/TourStop');
+const mongoose = require('mongoose');
 
 const tours = require('../../../lib/routes/tours');
 const request = require('supertest');
@@ -68,7 +69,7 @@ describe('tours route', () => {
               
             });
     });
-    it.only('cant post a stop to a tour', () => {
+    it('cant post a stop to a tour', () => {
         return Tour.create({
             title:'first tour', 
             activities: ['poledancing', 'trapese'],
@@ -81,7 +82,6 @@ describe('tours route', () => {
                 ]);
             })
             .then(([createdTour, weather])=>{
-                console.log('weather', weather);
                 const createdTourId = createdTour._id; //works   
                 return request(app)
                     .post(`/api/v1/tours/${createdTourId}/stops`)
@@ -96,9 +96,17 @@ describe('tours route', () => {
                     .find();     
             })
             .then(found=>{
-                expect(found).toEqual('hi');
-            });
-
+                expect(found[0].toJSON()).toEqual(
+                    { __v:0,
+                        _id:expect.any(mongoose.Types.ObjectId),
+                        attendance:600,
+                        tour:expect.any(mongoose.Types.ObjectId),
+                        weather: 'Heavy Cloud'  }
+                );
+            
+           
+                    
+            }); 
     });
   
 })
