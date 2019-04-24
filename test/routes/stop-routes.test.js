@@ -31,7 +31,7 @@ describe('stop routes', () => {
       .send({
         location: 'PDX',
         weather: {
-          applicable_date: new Date('2019'),
+          applicable_date: '2019-04-27T07:00:00.000Z',
           weather_state_name: 'Sunny'
         },
         attendance: 200
@@ -40,12 +40,12 @@ describe('stop routes', () => {
         expect(res.body).toEqual({
           location: 'PDX',
           weather: {
-            applicable_date: new Date('2019'),
+            applicable_date: '2019-04-27T07:00:00.000Z',
             weather_state_name: 'Sunny'
           },
           attendance: 200,
           __v: 0,
-          _id: expect.any(mongoose.Types.ObjectId)
+          _id: expect.any(String)
         });
       });
   });

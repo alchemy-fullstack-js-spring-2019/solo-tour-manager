@@ -32,7 +32,7 @@ describe('Tour routes', () => {
       .send({
         title: 'Best Little Whore-House in PDX',
         activities: ['fire-breathing', 'feats of strength', 'juggling'],
-        launchdate: new Date(),
+        launchdate: '2019-04-27T07:00:00.000Z',
         stops: [
           {
             location: 'Portland',
@@ -51,7 +51,7 @@ describe('Tour routes', () => {
           {
             title: 'Best Little Whore-House in PDX',
             activities: ['fire-breathing', 'feats of strength', 'juggling'],
-            launchdate: expect.any(String),
+            launchdate: '2019-04-27T07:00:00.000Z',
             stops: [
               {
                 location: 'Portland',
