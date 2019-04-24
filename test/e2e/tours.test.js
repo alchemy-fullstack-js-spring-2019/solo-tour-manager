@@ -3,6 +3,7 @@ require('../connect-to-db');
 // const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
+const Tour = require('../../lib/models/Tour');
 
 describe('tour routes tests', () => {
   const launchDate = Date.now();
@@ -25,4 +26,21 @@ describe('tour routes tests', () => {
         });
       });
   });
+
+  it('gets a list of tours', () => {
+    return Tour.create({
+      title: 'Funny Little Dancing Tour',
+      activities: ['dancing', 'comedy'],
+      launchDate
+    })
+      .then(() => {
+        return request(app)
+          .get('/tours');
+      })
+      .then(tours => {
+        expect(tours.body).toHaveLength(1);
+      });
+  });
+
+  
 });
