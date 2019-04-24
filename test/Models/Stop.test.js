@@ -38,11 +38,12 @@ describe('stop schema test', () => {
         temp_max: 60,
         temp_min: 40,
         description: 'cloudy'
-      }
+      },
+      attendance: 0
     });
 
     const errors = stop.validateSync().errors;
-    expect(errors.attendance.message).toEqual('Path `attendance` is required.');
+    expect(errors.attendance.message).toEqual('Path `attendance` (0) is less than minimum allowed value (1).');
     expect(errors['location.lon'].message).toEqual('Path `location.lon` is required.');
     expect(errors['location.lat'].message).toEqual('Path `location.lat` is required.');
   });
