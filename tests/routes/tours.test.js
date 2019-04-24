@@ -1,3 +1,4 @@
+require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
 const Tour = require('../../lib/models/Tour');
@@ -6,7 +7,7 @@ describe('tour routes', () => {
   it('can create a tour', () => {
     const date = new Date;
     return request(app)
-      .post()
+      .post('/api/v1/tours')
       .send({ title: 'greatest show', activities: ['games'], launchDate: date, stops: [{ 
         location: '36.974018,-122.030952', 
         attendance: 100
