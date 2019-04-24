@@ -69,45 +69,40 @@ describe('tours route', () => {
               
             });
     });
-    it('cant post a stop to a tour', () => {
-        return Tour.create({
-            title:'first tour', 
-            activities: ['poledancing', 'trapese'],
-            date:date
+
+    it('cant post a stop to a tour', () => 
+    {
+        return TourStop.create({
+            location:'test',
+            weather:'sunny',
+            attendance:500
         })
-            .then(createdTour=>{
+            .then(createdTourStop=>{
+                const date = new Date;
+                const tourStopId = createdTourStop._id;
                 return Promise.all([
-                    Promise.resolve(createdTour),
-                    getWeather()
-                ]);
-            })
-            .then(([createdTour, weather])=>{
-                const createdTourId = createdTour._id; //works   
-                return request(app)
-                    .post(`/api/v1/tours/${createdTourId}/stops`)
-                    .send({
-                        location: weather.latt_long,
-                        weather: weather.currentWeather,
-                        attendance: 600
+                    Tour.create({
+                        title:'first tour', 
+                        activities: ['poledancing', 'trapese'],
+                        date:date     
+                    }),
+                    Promise.resolve(tourStopId)
+                ])
+                    .then(([createdTour, tourStopId])=>{
+                        console.log('created tour and tourStop id', createdTour._id);
+                        const createdTourId = createdTour._id;
+                        return request(app)
+                            .post(`/api/v1/tours/${createdTourId}/stops`)
+                            .send({ tourStopId });
                     });
             })
             .then(()=>{
-                return TourStop
-                    .find();     
+                return Tour
+                    .find()
+                    .populate('tourStops');  
             })
-            .then(found=>{
-                expect(found[0].toJSON()).toEqual(
-                    { __v:0,
-                        _id:expect.any(mongoose.Types.ObjectId),
-                        attendance:600,
-                        tour:expect.any(mongoose.Types.ObjectId),
-                        weather: 'Heavy Cloud'  }
-                );
-            
-           
-                    
-            }); 
+            .then(foundTour=>{
+                expect(foundTour).toEqual('hi');          
+            });
     });
-  
-})
-;
+});
