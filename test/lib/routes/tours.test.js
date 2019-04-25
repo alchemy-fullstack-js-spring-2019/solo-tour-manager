@@ -78,36 +78,32 @@ describe('tours route', () => {
             weather:'sunny',
             attendance:500
         })
-            .then(createdTourStop=>{
-                console.log('created tour stop', createdTourStop);
+            .then(createdTourStop=>{       
                 const date = new Date;
                 const tourStopId = createdTourStop._id;
-                console.log('tour stop id', tourStopId);
                 return Promise.all([
                     Tour.create({
                         title:'first tour', 
                         activities: ['poledancing', 'trapese'],
-                        date:date,
-                      
+                        date:date,                  
                     }),
                     Promise.resolve(tourStopId)
                 ])
-                    .then(([createdTour, tourStopId])=>{
-                        console.log('send tour stop id', tourStopId);
-                        
+                    .then(([createdTour, tourStopId])=>{       
                         const createdTourId = createdTour._id;
                         return request(app)
                             .post(`/api/v1/tours/${createdTourId}/stops`)
-                            .send({ tourStopId });
-                           
+                            .send({ tourStopId });                
                     });
             })
-            .then(()=>{
+            .then((updatedTour)=>{
                 return Promise.all([
                     Tour.find(),
-                    TourStop.find()
+                    TourStop.find(),
+                    Promise.resolve(updatedTour)
                 ])
-                    .then(([tour, tourStop])=>{
+                    .then(([tour, tourStop, updatedTour])=>{
+                        console.log('updatedTour', updatedTour.body);
                         console.log('tourStop', tourStop);
                         expect(tour).toEqual('hi');
                     });
