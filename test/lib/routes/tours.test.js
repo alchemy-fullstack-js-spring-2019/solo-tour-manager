@@ -104,4 +104,36 @@ describe('tours route', () => {
                 });
             });       
     });
+    it('can delete a tour', ()=>{
+        {
+            return TourStop.create({
+                location:'test',
+                weather:'sunny',
+                attendance:500
+            })
+                .then(createdTourStop=>{       
+                    const date = new Date;
+                    const tourStopId = createdTourStop._id;
+                    return Promise.all([
+                        Tour.create({
+                            title:'first tour', 
+                            activities: ['poledancing', 'trapese'],
+                            date:date,                  
+                        }),
+                        Promise.resolve(tourStopId)
+                    ])
+                        .then(([createdTour, tourStopId])=>{       
+                            const createdTourId = createdTour._id;
+                            return request(app)
+                                .post(`/api/v1/tours/${createdTourId}/stops`)
+                                .send({ tourStopId });  
+                                              
+                        })
+                        .then(()=>{
+                            return request(app)
+                            .delete(`/api/v1/tours/${createdTourId}/stops`)
+                        })
+                        
+                })
+    })
 });
