@@ -97,17 +97,11 @@ describe('tours route', () => {
                     });
             })
             .then((updatedTour)=>{
-                return Promise.all([
-                    Tour.find(),
-                    TourStop.find(),
-                    Promise.resolve(updatedTour)
-                ])
-                    .then(([tour, tourStop, updatedTour])=>{
-                        console.log('updatedTour', updatedTour.body);
-                        console.log('tourStop', tourStop);
-                        expect(tour).toEqual('hi');
-                    });
-            });
-          
+                expect(updatedTour.body.stops[0]).toEqual({
+                    _id:expect.any(String),
+                    attendance:500,
+                    weather: 'sunny'
+                });
+            });       
     });
 });
