@@ -7,6 +7,15 @@ const mongoose = require('mongoose');
 describe('Tour routes', () => {
   const launchDate = new Date();
 
+  const mockStop = {
+    location: {
+      lat: '43.041809',
+      lon: '-87.906837'
+    },
+    attendance: 1
+  };
+
+
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/tours', {
       useFindAndModify: false,
@@ -47,60 +56,23 @@ describe('Tour routes', () => {
       });
   });
 
-  // it('finds and returns all tours', () => {
-  //   return request(app)
-  //     .get('/tours')
-  //     .then(res => {
-  //       expect(res.body).toHaveLength(0);
-  //       expect(res.body).toEqual(expect.any(Array));
-  //     });
-  // });
-
-  // it('finds and returns a tour by id', () => {
-  //   return request(app)
-  //     .post('/tours')
-  //     .send({
-  //       title: 'Best Little Whore-House in PDX',
-  //       activities: ['fire-breathing', 'feats of strength', 'juggling'],
-  //       launchdate: new Date(),
-  //       stops: [
-  //         {
-  //           location: 'Portland',
-  //           weather: 'Sunny',
-  //           attendance: 1
-  //         },
-  //         {
-  //           location: 'Seattle',
-  //           weather: 'Rainy',
-  //           attendance: 5
-  //         }
-  //       ]
-  //     })
-  //     .then(createdTour => {
-  //       return request(app)
-  //         .get(`/tours/${createdTour.body._id}`);
-  //     })
-  //     .then(res => {
-  //       expect(res.body).toEqual({
-  //         title: 'Best Little Whore-House in PDX',
-  //         activities: ['fire-breathing', 'feats of strength', 'juggling'],
-  //         launchdate: expect.any(String),
-  //         stops: [
-  //           {
-  //             location: 'Portland',
-  //             weather: 'Sunny',
-  //             attendance: 1,
-  //             _id: expect.any(String)
-  //           },
-  //           {
-  //             location: 'Seattle',
-  //             weather: 'Rainy',
-  //             attendance: 5,
-  //             _id: expect.any(String)
-  //           }
-  //         ],
-  //         _id: expect.any(String)
-  //       });
-  //     });
-  // });
+  it('gets a tour by its id', () => {
+    return request(app)
+      .post('/tours')
+      .send({
+        title: 'Coolest Tour',
+        activities: ['cool', 'stuff'],
+        launchdate: launchDate
+      })
+      .then(res => {
+        console.log(res.body);
+        return request(app)
+          .post(`/tours/${res.body._id}/stops`)
+          .send(mockStop)
+          .then(() => {
+            console.log(res.body);
+            return res.body._id;
+          });
+      });
+  });
 });
