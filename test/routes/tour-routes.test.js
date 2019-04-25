@@ -56,6 +56,31 @@ describe('Tour routes', () => {
       });
   });
 
+  it('gets a tour by id', () => {
+    return request(app)
+      .post('/tours')
+      .send({
+        title: 'Coolest Tour',
+        activities: ['cool', 'stuff'],
+        launchdate: launchDate
+      })
+      .then(createdTour => {
+        return request(app)
+          .get(`/tours/${createdTour.body._id}`);
+      })
+      .then(res => {
+        console.log('RES BODY', res.body);
+        expect(res.body).toEqual({
+          title: 'Coolest Tour',
+          activities: ['cool', 'stuff'],
+          launchdate: launchDate.toISOString(),
+          __v: 0,
+          _id: expect.any(String),
+          stops: []
+        });
+      });
+  });
+
   it('gets a tour by its id', () => {
     return request(app)
       .post('/tours')
