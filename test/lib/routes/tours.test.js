@@ -20,6 +20,7 @@ describe('tours route', () => {
                 date:date
             })
             .then(created => {
+                
                 expect(created.body).toEqual({
                     title:'first tour',
                     activities: ['poledancing', 'trapese'],
@@ -78,31 +79,39 @@ describe('tours route', () => {
             attendance:500
         })
             .then(createdTourStop=>{
+                console.log('created tour stop', createdTourStop);
                 const date = new Date;
                 const tourStopId = createdTourStop._id;
+                console.log('tour stop id', tourStopId);
                 return Promise.all([
                     Tour.create({
                         title:'first tour', 
                         activities: ['poledancing', 'trapese'],
-                        date:date     
+                        date:date,
+                      
                     }),
                     Promise.resolve(tourStopId)
                 ])
                     .then(([createdTour, tourStopId])=>{
-                        console.log('created tour and tourStop id', createdTour._id);
+                        console.log('send tour stop id', tourStopId);
+                        
                         const createdTourId = createdTour._id;
                         return request(app)
                             .post(`/api/v1/tours/${createdTourId}/stops`)
                             .send({ tourStopId });
+                           
                     });
             })
             .then(()=>{
-                return Tour
-                    .find()
-                    .populate('tourStops');  
-            })
-            .then(foundTour=>{
-                expect(foundTour).toEqual('hi');          
+                return Promise.all([
+                    Tour.find(),
+                    TourStop.find()
+                ])
+                    .then(([tour, tourStop])=>{
+                        console.log('tourStop', tourStop);
+                        expect(tour).toEqual('hi');
+                    });
             });
+          
     });
 });
