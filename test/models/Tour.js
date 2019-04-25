@@ -36,21 +36,21 @@ describe('Tour schema tests', () => {
 
     console.log('nonJSON', tour);
 
-    expect(tour).toEqual({
+    expect(tour.toJSON()).toEqual({
       title: 'Best Little Whore-House in PDX',
       activities: ['fire-breathing', 'feats of strength', 'juggling'],
       launchdate: new Date('1999'),
       stops: [
         {
           attendance: 1,
-          _id: expect.any(String)
+          _id: expect.any(mongoose.Types.ObjectId)
         },
         {
           attendance: 5,
-          _id: expect.any(String)
+          _id: expect.any(mongoose.Types.ObjectId)
         }
       ],
-      _id: expect.any(String)
+      _id: expect.any(mongoose.Types.ObjectId)
     });
   });
 

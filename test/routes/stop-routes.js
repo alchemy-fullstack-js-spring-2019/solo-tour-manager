@@ -49,4 +49,30 @@ describe('stop routes', () => {
         });
       });
   });
+
+  it('can create a stop by tour id', () => {
+    return request(app)
+      .post('/tours')
+      .send({
+        title: 'Best Little Whore-House in PDX',
+        activities: ['fire-breathing', 'feats of strength', 'juggling'],
+        launchdate: new Date('1995'),
+        stops: [
+          {
+            location: 'Portland',
+            weather: 'Sunny',
+            attendance: 1
+          },
+          {
+            location: 'Seattle',
+            weather: 'Rainy',
+            attendance: 5
+          }
+        ]
+      })
+      })
+      .then(res => request(app).get(`/tours/${res.body._id}/stops`))
+  })
+
+
 });
