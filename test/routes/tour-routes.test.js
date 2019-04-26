@@ -9,8 +9,8 @@ describe('Tour routes', () => {
 
   const mockStop = {
     location: {
-      lat: '43.041809',
-      lon: '-87.906837'
+      lat: 43.041809,
+      lon: -87.906837
     },
     attendance: 1
   };
@@ -69,7 +69,6 @@ describe('Tour routes', () => {
           .get(`/tours/${createdTour.body._id}`);
       })
       .then(res => {
-        console.log('RES BODY', res.body);
         expect(res.body).toEqual({
           title: 'Coolest Tour',
           activities: ['cool', 'stuff'],
@@ -81,7 +80,7 @@ describe('Tour routes', () => {
       });
   });
 
-  it('gets a tour by its id', () => {
+  it('adds a stop to the tour', () => {
     return request(app)
       .post('/tours')
       .send({
@@ -90,14 +89,23 @@ describe('Tour routes', () => {
         launchdate: launchDate
       })
       .then(res => {
-        console.log(res.body);
         return request(app)
           .post(`/tours/${res.body._id}/stops`)
-          .send(mockStop)
-          .then(() => {
-            console.log(res.body);
-            return res.body._id;
-          });
+          .send(mockStop);
+      })
+      .then(res => {
+        console.log('ADDING TOURS', res.body);
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          __v: 0,
+          attendance: 1,
+          location: {
+            lat: expect.any(Number),
+            lon: expect.any(Number)
+          }
+        });
       });
   });
+
+
 });
