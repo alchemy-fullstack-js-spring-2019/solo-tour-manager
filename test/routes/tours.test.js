@@ -18,7 +18,7 @@ describe('tour routes correctly', () => {
     return mongoose.connection.close();
   });
   
-  it('posts a tour', () => {
+  it('posts a tour without stops', () => {
     return request(app)
       .post('/planner/tours')
       .send({
@@ -26,9 +26,14 @@ describe('tour routes correctly', () => {
         activities: ['music', 'party']
       })
       .then(res => {
-        expect(res.body).toEqual('');
+        expect(res.body).toEqual({
+          __v: 0,
+          _id: expect.any(String),
+          activities: ['music', 'party'],
+          launchDate: expect.any(String),
+          'title': 'Spring Tour'
+        });
       });
   });
 
-  // it('')
 });
