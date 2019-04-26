@@ -1,16 +1,10 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const app = require('./lib/app.js');
+require('dotenv').config(); 
+require('./lib/utils/connect')();
+const app = require('./lib/app');
 
-const PORT = process.env.PORT || 8888;
-
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useCreateIndex: true
-});
+const PORT = process.env.PORT || 6666;
 
 app.listen(PORT, () => {
-  //eslint-disable-next-line
-  console.log(`LISTENING ON PORT ${PORT}`);
+  // eslint-disable-next-line no-console
+  console.log(`LISTENING on ${PORT}`);
 });
