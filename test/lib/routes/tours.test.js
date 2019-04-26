@@ -1,7 +1,6 @@
 const Tour = require('../../../lib/Model/Tour');
 const TourStop = require('../../../lib/Model/TourStop');
 const mongoose = require('mongoose');
-
 const tours = require('../../../lib/routes/tours');
 const request = require('supertest');
 const app = require('../../../lib/app');
@@ -71,69 +70,81 @@ describe('tours route', () => {
             });
     });
 
-    it('cant post a stop to a tour', () => 
-    {
-        return TourStop.create({
-            location:'test',
-            weather:'sunny',
-            attendance:500
-        })
-            .then(createdTourStop=>{       
-                const date = new Date;
-                const tourStopId = createdTourStop._id;
-                return Promise.all([
-                    Tour.create({
-                        title:'first tour', 
-                        activities: ['poledancing', 'trapese'],
-                        date:date,                  
-                    }),
-                    Promise.resolve(tourStopId)
-                ])
-                    .then(([createdTour, tourStopId])=>{       
-                        const createdTourId = createdTour._id;
-                        return request(app)
-                            .post(`/api/v1/tours/${createdTourId}/stops`)
-                            .send({ tourStopId });                
+    it('can post a stop to a tour', ()=>{
+        
+        return Promise.all([
+            getWeather(),
+            request(app).post('/api/v1/tours') .send({
+                title:'first tour',
+                activities: ['poledancing', 'trapese'],
+                date:date
+            })
+        ])
+            .then(([receivedWeather, createdTour])=>{
+                const createdTourId = createdTour.body._id;
+                const location = receivedWeather.latt_long;
+                const weather = receivedWeather.currentWeather;
+                return request(app)
+                    .post(`/api/v1/tours/${createdTourId}/stops`)
+                    .send({
+                        location,
+                        weather,
+                        attendance:600
                     });
             })
-            .then((updatedTour)=>{
-                expect(updatedTour.body.stops[0]).toEqual({
-                    _id:expect.any(String),
-                    attendance:500,
-                    weather: 'sunny'
+            .then(updatedTour=>{ 
+                return expect(updatedTour.body.stops[0]).toEqual({
+                    _id: expect.any(String),
+                    attendance: 600,
+                    weather: 'Heavy Cloud'
                 });
-            });       
+            });
+            
+           
+         
+        
     });
-    it('can delete a tour', ()=>{
-        {
-            return TourStop.create({
-                location:'test',
-                weather:'sunny',
-                attendance:500
+    it('can delete a post from a tour', ()=>{
+        //created a post and a tour so that they can be deleted
+        return Promise.all([
+            getWeather(),
+            request(app).post('/api/v1/tours') .send({
+                title:'first tour',
+                activities: ['poledancing', 'trapese'],
+                date:date
             })
-                .then(createdTourStop=>{       
-                    const date = new Date;
-                    const tourStopId = createdTourStop._id;
-                    return Promise.all([
-                        Tour.create({
-                            title:'first tour', 
-                            activities: ['poledancing', 'trapese'],
-                            date:date,                  
-                        }),
-                        Promise.resolve(tourStopId)
-                    ])
-                        .then(([createdTour, tourStopId])=>{       
-                            const createdTourId = createdTour._id;
-                            return request(app)
-                                .post(`/api/v1/tours/${createdTourId}/stops`)
-                                .send({ tourStopId });  
-                                              
-                        })
-                        .then(()=>{
-                            return request(app)
-                            .delete(`/api/v1/tours/${createdTourId}/stops`)
-                        })
-                        
-                })
-    })
+        ])
+            .then(([receivedWeather, createdTour])=>{
+                const createdTourId = createdTour.body._id;
+             
+                const location = receivedWeather.latt_long;
+                const weather = receivedWeather.currentWeather;
+                return request(app)
+                    .post(`/api/v1/tours/${createdTourId}/stops`)
+                    .send({
+                        location,
+                        weather,
+                        attendance:600
+                    }); //created tour and stop ^^
+            })//created tour and stop ^^
+            ///tours/:id/stops/:stopId/attendence
+            .then(tourWithTourStop=>{
+                const tourToRemoveStopFromId = tourWithTourStop.body._id;
+                const tourStopId = tourWithTourStop.body.stops[0]._id;
+                return request(app)
+                    .delete(`/api/v1/tours/${tourToRemoveStopFromId}/stops/${tourStopId}`)
+                    .then(updatedTour=>{
+                        expect(updatedTour.body).toEqual({
+                            _id:tourStopId,
+                            attendance:expect.any(Number),
+                            weather: expect.any(String)
+
+                        });
+                    });
+                    
+            });
+    });
+   
+
+
 });
