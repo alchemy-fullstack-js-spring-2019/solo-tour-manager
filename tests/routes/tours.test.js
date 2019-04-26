@@ -1,7 +1,6 @@
 require('dotenv').config();
 const request = require('supertest');
 const mongoose = require('mongoose');
-const connect = require('../../lib/utils/connect');
 const app = require('../../lib/app');
 const Tour = require('../../lib/models/Tour');
 
@@ -141,6 +140,44 @@ describe('tour routes', () => {
           ],
           _id: expect.any(String),
         }));
+      });
+  });
+
+  it.only('can delete stops by id', () => {
+    return Tour
+      .create(newTour)
+      .then(createdTour => {
+        return request(app)
+          .patch(`/api/v1/tours/${createdTour._id}/stops`)
+          .send({
+            location: '36.85,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 50
+          });
+      })
+      .then(updatedTour => {
+        return request(app)
+          .delete(`/api/v1/tours/${updatedTour.body._id}/stops/${updatedTour.body.stops[1]._id}`);
+      })
+      .then(updatedTour => {
+        expect(updatedTour.body).toEqual({
+          title: 'greatest show',
+          activities: ['games'],
+          launchDate: date.toISOString(),
+          stops: [{
+            _id: expect.any(String),
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 100
+          }],
+          _id: expect.any(String)
+        });
       });
   });
 });
