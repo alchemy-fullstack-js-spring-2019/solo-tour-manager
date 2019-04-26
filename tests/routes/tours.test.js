@@ -79,7 +79,7 @@ describe('tour routes', () => {
       .create(newTour)
       .then(createdTour => {
         return request(app)
-          .get(`/api/v1/tours/${createdTour._id}`)
+          .get(`/api/v1/tours/${createdTour._id}`);
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -97,6 +97,50 @@ describe('tour routes', () => {
           }],
           _id: expect.any(String),
         });
+      });
+  });
+
+  it('can add a stop to the tour', () => {
+    return Tour
+      .create(newTour)
+      .then(createdTour => {
+        return request(app)
+          .patch(`/api/v1/tours/${createdTour._id}/stops`)
+          .send({
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 100
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual(({
+          title: 'greatest show',
+          activities: ['games'],
+          launchDate: date.toISOString(),
+          stops: [{
+            _id: expect.any(String),
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 100
+          },
+          {
+            _id: expect.any(String),
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 100
+          }
+          ],
+          _id: expect.any(String),
+        }));
       });
   });
 });
