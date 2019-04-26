@@ -22,26 +22,27 @@ describe('tour routes', () => {
     return mongoose.connection.close();
   });
 
-  
+  const date = new Date;
+
+  const newTour = {
+    title: 'greatest show', 
+    activities: ['games'], 
+    launchDate: date, 
+    stops: [{ 
+      location: '36.974018,-122.030952',
+      weather: {
+        temp: null,
+        weatherState: null
+      },
+      attendance: 100
+    }]
+  };
+
   it('can create a tour', () => {
-    const date = new Date;
     return request(app)
       .post('/api/v1/tours')
-      .send({
-        title: 'greatest show', 
-        activities: ['games'], 
-        launchDate: date, 
-        stops: [{ 
-          location: '36.974018,-122.030952',
-          weather: {
-            temp: null,
-            weatherState: null
-          },
-          attendance: 100
-        }]
-      })
+      .send(newTour)
       .then(result   => {
-        console.log(result.body);
         expect(result.body).toEqual({
           title: 'greatest show',
           activities: ['games'],
@@ -50,14 +51,26 @@ describe('tour routes', () => {
             _id: expect.any(String),
             location: '36.974018,-122.030952',
             weather: {
-              weatherState: expect.any(String),
-              temp: expect.any(Number)
+              weatherState: null,
+              temp: null
             },
             attendance: 100
           }],
           _id: expect.any(String),
           __v: 0
         });
+      });
+  });
+
+  it('can get all tours', () => {
+    return Tour
+      .create(newTour)
+      .then(() => {
+        return request(app)
+          .get('/api/v1/tours');
+      })
+      .then(res => {
+        expect(res.body).toHaveLength(1);
       });
   });
 });
