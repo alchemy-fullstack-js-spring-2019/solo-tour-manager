@@ -15,7 +15,6 @@ describe('Tour routes', () => {
     attendance: 1
   };
 
-
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/tours', {
       useFindAndModify: false,
@@ -24,7 +23,6 @@ describe('Tour routes', () => {
     });
   });
 
-  
   beforeEach(() => {
     return mongoose.connection.dropDatabase();
   });
@@ -100,8 +98,14 @@ describe('Tour routes', () => {
           __v: 0,
           attendance: 1,
           location: {
-            lat: expect.any(Number),
-            lon: expect.any(Number)
+            lat: 43.041809,
+            lon: -87.906837,
+            name: 'Milwaukee',
+            woeid: 2451822
+          },
+          weather: {
+            weather_state_name: 'Clear',
+            temp: 15.334999999999999
           }
         });
       });
