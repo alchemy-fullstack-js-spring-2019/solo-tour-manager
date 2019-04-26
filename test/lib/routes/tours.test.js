@@ -1,7 +1,4 @@
 const Tour = require('../../../lib/Model/Tour');
-const TourStop = require('../../../lib/Model/TourStop');
-const mongoose = require('mongoose');
-const tours = require('../../../lib/routes/tours');
 const request = require('supertest');
 const app = require('../../../lib/app');
 const getWeather = require('../../../lib/services/weather');
