@@ -73,4 +73,30 @@ describe('tour routes', () => {
         expect(res.body).toHaveLength(1);
       });
   });
+
+  it('can get a tour by id', () => {
+    return Tour
+      .create(newTour)
+      .then(createdTour => {
+        return request(app)
+          .get(`/api/v1/tours/${createdTour._id}`)
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          title: 'greatest show',
+          activities: ['games'],
+          launchDate: date.toISOString(),
+          stops: [{
+            _id: expect.any(String),
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 100
+          }],
+          _id: expect.any(String),
+        });
+      });
+  });
 });
