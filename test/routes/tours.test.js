@@ -93,7 +93,7 @@ describe('tour routes', () => {
       });
   });
 
-  it.only('deletes a stop from a tour', () => {
+  it('deletes a stop from a tour', () => {
     let tourId = null;
     return request(app)
       .post('/tours')
@@ -122,6 +122,40 @@ describe('tour routes', () => {
             temp_max: 54.06,
             temp_min: 54.06
           }
+        });
+      });
+  });
+
+  it.only('updates a attendance', () => {
+    let tourId = null;
+    return request(app)
+      .post('/tours')
+      .send(tour)
+      .then(newTour => {
+        tourId = newTour.body._id;
+        return request(app)
+          .post(`/tours/${tourId}/stops`)
+          .send(stop);
+      })
+      .then(res => {
+        return request(app)
+          .patch(`/tours/${tourId}/stops/${res.body._id}/attendance`)
+          .send({ attendance: 12 });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          attendance: 12,
+          location: {
+            lat: 42.968064,
+            lon: -122.058485,
+            name: expect.any(String),
+          },
+          weather: {
+            description: expect.any(String),
+            temp_max: 54.06,
+            temp_min: 54.06
+          } 
         });
       });
   });
