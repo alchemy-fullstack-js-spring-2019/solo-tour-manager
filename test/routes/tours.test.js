@@ -65,7 +65,7 @@ describe('tour routes', () => {
       });
   });
 
-  it.only('adds a stop to a tour', () => {
+  it('adds a stop to a tour', () => {
     return request(app)
       .post('/tours')
       .send(tour)
@@ -89,6 +89,39 @@ describe('tour routes', () => {
           },
           _id: expect.any(String),
           __v: 0
+        });
+      });
+  });
+
+  it.only('deletes a stop from a tour', () => {
+    let tourId = null;
+    return request(app)
+      .post('/tours')
+      .send(tour)
+      .then(newTour => {
+        tourId = newTour.body._id;
+        return request(app)
+          .post(`/tours/${tourId}/stops`)
+          .send(stop);
+      })
+      .then(res => {
+        return request(app)
+          .delete(`/tours/${tourId}/stops/${res.body._id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          attendance: 2,
+          location: {
+            lat: 42.968064,
+            lon: -122.058485,
+            name: expect.any(String),
+          },
+          weather: {
+            description: expect.any(String),
+            temp_max: 54.06,
+            temp_min: 54.06
+          }
         });
       });
   });
