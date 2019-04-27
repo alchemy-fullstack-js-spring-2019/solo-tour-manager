@@ -7,8 +7,8 @@ describe('tour routes', () => {
   //   const testDate = date.toDateString();
   const stop = {
     location: {
-      lat: 44.44,
-      lon: 123.45
+      lat: 42.968064,
+      lon: -122.058485
     },
     attendance: 2
   };
@@ -69,33 +69,29 @@ describe('tour routes', () => {
     return request(app)
       .post('/tours')
       .send(tour)
-      .then(res => {
+      .then(created => {
         return request(app)
-          .post(`/tours/${res.body._id}/stops`)
+          .post(`/tours/${created.body._id}/stops`)
           .send(stop);
       })
       .then(res => {
         expect(res.body).toEqual({
-          title: 'stuff i want to eat',
-          activities: ['eating', 'walking', 'more eating'],
-          launchDate: expect.any(String),
+          location: {
+            lat: 42.968064,
+            lon: -122.058485,
+            name: expect.any(String)
+          },
+          attendance: 2,
+          weather: {
+            temp_max: expect.any(Number),
+            temp_min: expect.any(Number),
+            description: expect.any(String)
+          },
           _id: expect.any(String),
-          stops: [{
-            location: {
-              lat: 44.44,
-              lon: 123.45
-            },
-            attendance: 2,
-            weather: {
-              temp_max: expect.any(Number),
-              temp_min: expect.any(Number),
-              description: expect.any(String)
-            }
-          }],
+          __v: 0
         });
       });
   });
-
 });
 
 
