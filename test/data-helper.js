@@ -11,5 +11,5 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  return mongoose.connect.close();
+  return mongoose.connection.close();
 });
