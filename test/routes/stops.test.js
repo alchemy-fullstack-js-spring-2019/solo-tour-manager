@@ -1,7 +1,7 @@
 const request = require('superagent');
 const app = require('../../lib/app');
 
-describe('stop routes test', () => {
+describe.skip('stop routes test', () => {
   it('returns the weather from city name or lat/lon', () => {
     return request(app)
       .post('/tours/:id/stops')
