@@ -14,11 +14,27 @@ describe('tour routes tests', () => {
         activities: ['dancing', 'singing', 'juggling'],
         launchDate
       })
+      .then(tour => {
+        return request(app)
+          .post('/stops')
+          .send({
+            location: {
+              city: 'Portland',
+              state: 'Oregon',
+              zip: '97212'
+            },
+            weather: {
+
+            },
+            attendance: 500
+          });
+      })
       .then(results => {
+        console.log(results.body);
         expect(results.body).toEqual({
           __v: 0,
           _id: expect.any(String),
-          title: 'Magic Mystery Tour',
+          title: 'Magic Mystey Tour',
           activities: ['dancing', 'singing', 'juggling'],
           launchDate: expect.any(String),
           stops: []
