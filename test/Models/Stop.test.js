@@ -5,6 +5,7 @@ describe('stop schema test', () => {
   it('has location, weather, and attendance', () => {
     const stop = new Stop({
       location: {
+        name: 'canada',
         lat: 12345,
         lon: 4444,
       },
@@ -18,6 +19,7 @@ describe('stop schema test', () => {
 
     expect(stop.toJSON()).toEqual({
       location: {
+        name: 'canada',
         lat: 12345,
         lon: 4444,
       },
@@ -31,9 +33,12 @@ describe('stop schema test', () => {
     });
   });
 
-  it('has a required lat/lon and attendance', () => {
+  it('has a required name and attendance', () => {
     const stop = new Stop({
-      location: 'texas',
+      location: {
+        lat: 12345,
+        lon: 4444
+      },
       weather: {
         temp_max: 60,
         temp_min: 40,
@@ -44,7 +49,6 @@ describe('stop schema test', () => {
 
     const errors = stop.validateSync().errors;
     expect(errors.attendance.message).toEqual('Path `attendance` (0) is less than minimum allowed value (1).');
-    expect(errors['location.lon'].message).toEqual('Path `location.lon` is required.');
-    expect(errors['location.lat'].message).toEqual('Path `location.lat` is required.');
+    expect(errors['location.name'].message).toEqual('Path `location.name` is required.');
   });
 });

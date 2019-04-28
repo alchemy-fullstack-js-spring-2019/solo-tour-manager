@@ -4,7 +4,6 @@ const app = require('../../lib/app');
 const Tour = require('../../lib/Models/Tour');
 
 describe('tour routes', () => {
-  //   const testDate = date.toDateString();
   const stop = {
     location: {
       lat: 42.968064,
@@ -19,7 +18,6 @@ describe('tour routes', () => {
   };
 
   it('makes a new tour', () => {
-    // const date = new Date();
     return request(app)
       .post('/tours')
       .send(tour)
@@ -126,7 +124,7 @@ describe('tour routes', () => {
       });
   });
 
-  it.only('updates a attendance', () => {
+  it('updates a attendance', () => {
     let tourId = null;
     return request(app)
       .post('/tours')
