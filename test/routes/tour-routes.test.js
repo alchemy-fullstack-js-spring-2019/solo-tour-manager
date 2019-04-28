@@ -10,7 +10,13 @@ describe('Tour routes', () => {
   const mockStop = {
     location: {
       lat: 43.041809,
-      lon: -87.906837
+      lon: -87.906837,
+      name: 'Milwaukee',
+      woeid: 2451822
+    },
+    weather: {
+      weather_state_name: 'Clear',
+      temp: 15.334999999999999
     },
     attendance: 1
   };
@@ -92,7 +98,6 @@ describe('Tour routes', () => {
           .send(mockStop);
       })
       .then(res => {
-        console.log('ADDING TOURS', res.body);
         expect(res.body).toEqual({
           _id: expect.any(String),
           __v: 0,
@@ -104,9 +109,60 @@ describe('Tour routes', () => {
             woeid: 2451822
           },
           weather: {
-            weather_state_name: 'Clear',
-            temp: 15.334999999999999
+            weather_state_name: 'Hail',
+            temp: 3.9400000000000004
           }
+        });
+      });
+  });
+
+  it('deletes a stop from a specific tour', () => {
+    let tourId = null;
+    return request(app)
+      .post('/tours')
+      .send({
+        title: 'Coolest Tour',
+        activities: ['cool', 'stuff'],
+        launchdate: launchDate
+      })
+      .then(tour => {
+        tourId = tour.body._id;
+        return request(app)
+          .post(`/tours/${tourId}/stops`)
+          .send(mockStop);
+      })
+      .then(tourStop => {
+        console.log('tourstop', tourStop.body._id)
+        return request(app)
+          .delete(`/tours/${tourId}/stops/${tourStop.body._id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          __v: 0,
+          attendance: 1,
+          location: {
+            lat: 43.041809,
+            lon: -87.906837,
+            name: 'Milwaukee',
+            woeid: 2451822
+          },
+          weather: {
+            weather_state_name: 'Hail',
+            temp: 3.9400000000000004
+          }
+        });
+        return request(app)
+          .get(`/tours/${tourId}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          title: 'Coolest Tour',
+          activities: ['cool', 'stuff'],
+          launchdate: launchDate.toISOString(),
+          __v: 1,
+          _id: expect.any(String),
+          stops: []
         });
       });
   });
