@@ -1,19 +1,19 @@
 const Tour = require('../../lib/models/Tour');
 const mongoose = require('mongoose');
-// const connect = require('../../lib/utils/connect');
+const connect = require('../../lib/utils/connect');
 
 describe('Tour schema tests', () => {
-  // beforeAll(() => {
-  //   return connect();
-  // });
+  beforeAll(() => {
+    return connect();
+  });
 
-  // beforeEach(() => {
-  //   mongoose.connection.dropDatabase();
-  // });
+  beforeEach(() => {
+    mongoose.connection.dropDatabase();
+  });
 
-  // afterAll(() => {
-  //   return mongoose.connection.close();
-  // });
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
 
   it('can create a Tour', () => {
     const tour = new Tour({
