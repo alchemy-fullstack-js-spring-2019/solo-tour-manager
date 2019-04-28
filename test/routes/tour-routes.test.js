@@ -132,7 +132,6 @@ describe('Tour routes', () => {
           .send(mockStop);
       })
       .then(tourStop => {
-        console.log('tourstop', tourStop.body._id)
         return request(app)
           .delete(`/tours/${tourId}/stops/${tourStop.body._id}`);
       })
