@@ -13,7 +13,8 @@ describe('Tour schema', () => {
       _id: expect.any(mongoose.Types.ObjectId),
       title: 'Titled',
       activities: ['drink', 'dance'],
-      launchDate: expect.any(Object)
+      launchDate: expect.any(Object),
+      stops: []
     });
   });
 

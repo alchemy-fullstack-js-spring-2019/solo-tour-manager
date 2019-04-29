@@ -31,7 +31,8 @@ describe('tour routes correctly', () => {
           _id: expect.any(String),
           activities: ['music', 'party'],
           launchDate: expect.any(String),
-          'title': 'Spring Tour'
+          'title': 'Spring Tour',
+          stops: []
         });
       });
   });
