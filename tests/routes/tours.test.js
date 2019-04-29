@@ -50,8 +50,8 @@ describe('tour routes', () => {
             _id: expect.any(String),
             location: '36.974018,-122.030952',
             weather: {
-              weatherState: null,
-              temp: null
+              weatherState: expect.any(String),
+              temp: expect.any(Number)
             },
             attendance: 100
           }],
