@@ -37,4 +37,45 @@ describe('tour routes correctly', () => {
       });
   });
 
+  it('gets a list of tours', () => {
+    return request(app)
+      .post('/planner/tours')
+      .send({
+        title: 'dude',
+        activities: ['drink', 'beer']
+      })
+      .then(() => {
+        return request(app)
+          .get('/planner/tours');
+      })
+      .then(list => {
+        expect(list.body).toHaveLength(1);
+      });
+  });
+
+  it('gets a single tour by ID', () => {
+    return request(app)
+      .post('/planner/tours')
+      .send({
+        title: 'dude3',
+        activities: ['drink', 'beer']
+      })
+      .then(created => {
+        return request(app)
+          .get(`/planner/tours/${created.body._id}`);
+      })
+      .then(result => {
+        expect(result.body).toEqual({
+          launchDate: expect.any(String),
+          title: 'dude3',
+          activities: ['drink', 'beer'],
+          _id: expect.any(String),
+          __v: 0,
+          stops: []
+        });
+      });
+  });
+
+  // it()
+
 });
