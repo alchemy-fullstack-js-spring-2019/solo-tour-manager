@@ -136,14 +136,13 @@ describe('tour routes', () => {
               temp: null
             },
             attendance: 100
-          }
-          ],
+          }],
           _id: expect.any(String),
         }));
       });
   });
 
-  it.only('can delete stops by id', () => {
+  it('can delete stops by id', () => {
     return Tour
       .create(newTour)
       .then(createdTour => {
@@ -175,6 +174,32 @@ describe('tour routes', () => {
               temp: null
             },
             attendance: 100
+          }],
+          _id: expect.any(String)
+        });
+      });
+  });
+  it('can update the attendance of a stop', () => {
+    return Tour
+      .create(newTour)
+      .then(createdTour => {
+        return request(app)
+          .patch(`/api/v1/tours/${createdTour._id}/stops/${createdTour.stops[0]._id}`)
+          .send({ attendance: 45 });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          title: 'greatest show',
+          activities: ['games'],
+          launchDate: date.toISOString(),
+          stops: [{
+            _id: expect.any(String),
+            location: '36.974018,-122.030952',
+            weather: {
+              weatherState: null,
+              temp: null
+            },
+            attendance: 45
           }],
           _id: expect.any(String)
         });
