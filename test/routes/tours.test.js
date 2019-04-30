@@ -95,8 +95,36 @@ describe('tour routes correctly', () => {
             attendance: 10
           })
           .then(stopAdded => {
-            console.log(stopAdded.body.stops);
             expect(stopAdded.body.stops).toHaveLength(1);
+          });
+      });
+      
+  });
+
+  it('deletes a stop to by stopID', () =>{
+    return request(app)
+      .post('/planner/tours')
+      .send({
+        title: 'dude4',
+        activities: ['drink', 'beer']
+      })
+      .then(createdTour => {
+        return request(app)
+          .post(`/planner/tours/${createdTour.body._id}/stops`)
+          .send({
+            tour: createdTour.body._id,
+            latLong: {
+              lat: 36.96,
+              long: -122.02 
+            }, 
+            attendance: 10
+          })
+          .then(stopAdded => {
+            return request(app)
+              .delete(`/planner/tours/${createdTour.body._id}/stops/${stopAdded.body.stops[0]._id}`)
+              .then(deleted => {
+                expect(deleted.body._id).toEqual(stopAdded.body.stops[0]._id);
+              });
           });
       });
       
