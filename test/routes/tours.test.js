@@ -76,6 +76,30 @@ describe('tour routes correctly', () => {
       });
   });
 
-  // it()
+  it('adds a stop to a tour by ID', () =>{
+    return request(app)
+      .post('/planner/tours')
+      .send({
+        title: 'dude3',
+        activities: ['drink', 'beer']
+      })
+      .then(createdTour => {
+        return request(app)
+          .post(`/planner/tours/${createdTour.body._id}/stops`)
+          .send({
+            tour: createdTour.body._id,
+            latLong: {
+              lat: 36.96,
+              long: -122.02 
+            }, 
+            attendance: 10
+          })
+          .then(stopAdded => {
+            console.log(stopAdded.body.stops);
+            expect(stopAdded.body.stops).toHaveLength(1);
+          });
+      });
+      
+  });
 
 });
